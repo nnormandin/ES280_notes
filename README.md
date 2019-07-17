@@ -1,4 +1,4 @@
-# ES280 preqrequisite notes
+# ES280 prerequisite notes
 
 borrowed liberally from
 - https://github.com/mavam/stat-cookbook
