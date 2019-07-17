@@ -1,0 +1,337 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[nodayofweek]{datetime}
+\usepackage{environ}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[landscape,margin=13mm,footskip=1pt,includefoot]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{rotating}
+\usepackage{tikz}
+\usepackage{threeparttable}
+\usepackage{url}
+\usepackage{xspace}
+\input{probstat}
+\usepackage{bm}
+\usepackage{lipsum}
+
+
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue}
+% sources:
+% https://github.com/mavam/stat-cookbook
+% http://statweb.stanford.edu/~kriss1/statistics-consulting-cheat.pdf
+% wikipedia
+% goodfellow et al Deep Learning
+%
+
+\begin{document}
+
+\begin{multicols*}{2}
+\section{Probability and statistics}
+
+
+\subsection{Working with probability distributions}
+\begin{itemize}
+    \item Given probability distribution $\mathbb{P}$, sample space $\Omega$, and event $A \subseteq \Omega$:
+    \begin{itemize}
+        \item $\mathbb{P} \geq 0 \quad \forall A$ (probabilities are nonzero)
+        \item $\mathbb{P}[\Omega] = 1$ (probabilities sum to 1)
+        \item $\mathbb{P}[\varnothing] = 0$ (probability of empty set is 0)
+        \item $\Pr{\displaystyle\bigsqcup_{i=1}^\infty A_i}
+        = \displaystyle\sum_{i=1}^\infty \Pr{A_i} = 1$
+    \end{itemize}
+    \item Probabilities are independent when the joint probability is equal to the product of the marginal probabilities.
+    \[A \ind B \eqv \Pr{A \cap B} = \Pr{A}\Pr{B}\]
+
+    \item The conditional probability of $A$ given $B$ is the joint probability of $A$ and $B$ divided by the probability of just $B$.
+    \[\Pr{A \giv B} = \frac{\Pr{A \cap B}}{\Pr{B}}\]
+
+    \item The Probability Mass Function (PMF) is used to describe the behavior of \emph{discrete} probability distributions.
+    \[f_X(x) = \Pr{X = x}\]
+
+    \item The Probability Density Function (PDF) is the equivalent for \emph{continuous} distributions. We use the PDF to determine the probability that random variable $X$ is between $A$ and $B$.
+    \[\Pr{a \le X \le b} = \int_a^b f(x)\dx\]
+
+    \item The Cumulative Distribution Function (CDF) is the integral of the PDF and we use it to determine the probability that random variable $X$ is less than or equal to $x$. It maps $\R \to [0,1]$ and is monotonically non-decreasing. The left and right limits are $0$ and $1$ ($\lim_{x\to -\infty} = 0$ and $\lim_{x\to \infty} = 1$).
+    \[F_X(x) = \Pr{X \le x}\]
+
+\end{itemize}
+
+\subsubsection{Notes on the normal distribution}
+\begin{itemize}
+    \item The normal distribution is a function of mean $\mu$ and variance $\sigma^2$
+    \item The simplest case is the \textbf{standard normal distribution}, $Z \sim \mathcal{N}(0, 1)$, which reduces to:
+    $$\phi(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}x^2}$$
+
+    \begin{itemize}
+        \item Interestingly, others have defined even simpler standard normals. Gauss proposed $\sigma^2 = \frac{1}{2}$, which reduces to:
+        $$\phi(x) = \frac{e^{-x^2}}{\sqrt{pi}}$$
+
+        \item Stigler proposed a formulation with $\sigma^2 = \frac{1}{2\pi}$, leading to:
+        $$\phi(x) = e^{-\pi x^2}$$
+
+    \end{itemize}
+    \item We can convert any normally distributed variable $X$ to a \emph{standard normal} by subtracting the mean and dividing by the standard deviation.
+    $$ Z = \frac{X - \mu}{\sigma} $$
+    \item \textbf{68-95-99.7 rule:} the percentage of values that lie within 1, 2, and 3 standard deviations of the mean of a normal distribution are $68.27\%$, $95.45\%$, and $99.73\%$ respectively. A $\mu \pm 3\sigma$ deviation should occur at a frequency of about 1 in 370.
+    \item The Gauss Error Function gives the probability of a RV $Z \sim \mathcal{N}(0, 1/2)$ falling in the range $[-x, x]$:
+    $$ \mathrm{erf}(x) = \frac{2}{\sqrt{\pi}}\int_{0}^{x}e^{-t^2}$$
+
+\end{itemize}
+
+
+\end{multicols*}
+
+\subsection{Common distributions}
+
+\begin{center}
+\small
+\begin{tabular}{@{}l*6{>{\begin{math}\displaystyle}c<{\end{math}}}@{}}
+  \toprule &&&&&& \\[-2ex]
+  & \text{Type}
+  & F_X(x) & f_X(x) & \E{X} & \V{X} & M_X(s) \\[1ex]
+
+  \midrule
+
+  Uniform & Discrete & \punifd & \dunifd &
+  \frac{a+b}{2} & \frac{(b-a+1)^2-1}{12} &
+  \frac{e^{as}-e^{-(b+1)s}}{s(b-a)} \\[3ex]
+
+  Bernoulli & Discrete & \pbern & \dbern &
+  p & p(1-p) &
+  1-p+pe^s \\[3ex]
+
+  Binomial & Discrete & I_{1-p}(n-x,x+1) & \dbin &
+  np & np(1-p) &
+  (1-p+pe^s)^n \\[3ex]
+
+  Multinomial & Discrete & & \dmult \quad \sum_{i=1}^k x_i = n&
+  \left( {\begin{array}{*{20}{c}}
+    {n{p_1}}\\
+    \vdots \\
+    {n{p_k}}
+  \end{array}} \right) & \left( {\begin{array}{*{20}{c}}
+    {n{p_1}(1 - {p_1})}&{ - n{p_1}{p_2}}\\
+    { - n{p_2}{p_1}}& \ddots
+    \end{array}} \right) &
+  \left( \sum_{i=0}^k p_i e^{s_i} \right)^n \\[3ex]
+
+
+  Poisson & Discrete & \ppois & \dpois &
+  \lambda & \lambda &
+  e^{\lambda(e^s-1)}\\[3ex]
+
+ Uniform & Continuous & \punif & \dunif &
+  \frac{a+b}{2} & \frac{(b-a)^2}{12} &
+  \frac{e^{sb}-e^{sa}}{s(b-a)} \\[3ex]
+
+  Normal & Continuous &
+  \Phi(x)=\displaystyle\int_{-\infty}^x \phi(t)\,dt &
+  \phi(x)=\dnorm &
+  \mu & \sigma^2 &
+  \Exp{\mu s + \frac{\sigma^2s^2}{2}}\\[3ex]
+
+  Log-Normal & Continuous &
+  \frac{1}{2}+\frac{1}{2} \erf\left[\frac{\ln x-\mu}{\sqrt{2\sigma^2}}\right] &
+  \frac{1}{x\sqrt{2\pi\sigma^2}} \Exp{-\frac{(\ln x - \mu)^2}{2\sigma^2}} &
+  e^{\mu+\sigma^2/2} &
+  (e^{\sigma^2}-1) e^{2\mu+\sigma^2} &
+  \\[3ex]
+
+  Multivariate Normal & Continuous & &
+  (2\pi)^{-k/2} |\Sigma|^{-1/2} e^{-\frac{1}{2}(x-\mu)^T \Sigma^{-1}(x-\mu)} &
+  \mu & \Sigma &
+  \Exp{\mu^T s + \frac{1}{2} s^T \Sigma s}\\[3ex]
+
+  Student's $t$ & Continuous
+  & I_x\left( \frac{\nu}{2},\frac{\nu}{2} \right)
+  & \frac{\Gamma\left(\frac{\nu+1}{2}\right)}
+    {\sqrt{\nu\pi}\Gamma\left(\frac{\nu}{2}\right)}
+    \left(1+\frac{x^2}{\nu}\right)^{-(\nu+1)/2}
+  & 0 \quad \nu  > 1
+  & \begin{cases}
+      \displaystyle\frac{\nu}{\nu-2} & \nu > 2 \\
+      \infty & 1 < \nu \le 2
+    \end{cases}
+  & \\[3ex]
+
+  Chi-square & Continuous &
+  \frac{1}{\Gamma(k/2)} \gamma\left(\frac{k}{2}, \frac{x}{2}\right) &
+  \frac{1}{2^{k/2} \Gamma(k/2)} x^{k/2-1} e^{-x/2}&
+  k & 2k &
+  (1-2s)^{-k/2} \; s<1/2\\[3ex]
+
+  Exponential\tnote{$\ast$} & Continuous & \pex & \dex &
+  \beta & \beta^2 &
+  \frac{1}{1-\frac{s}{\beta}} \left(s<\beta\right) \\[3ex]
+
+\bottomrule
+\end{tabular}
+\end{center}
+\clearpage
+\begin{multicols*}{2}
+
+
+\subsection{Hypothesis testing}
+\begin{itemize}
+    \item Framework for filtering implausible scientific claims
+    \item Basic steps:
+    \begin{enumerate}
+        \item State relevant null hypothesis ($H_0$) and alternative hypothesis ($H_1$)
+        \begin{itemize}
+            \item Two-sided: $H_0: \theta = \theta_0$ vs $H_1: \theta \neq \theta_0$
+            \item One-sided: $H_0: \theta \leq \theta_0$ vs $H_1: \theta > \theta_0$
+        \end{itemize}
+        \item Determine relevant test statistic ($T$) distribution, typically Student's $t$ or normal distribution
+        \item Select significance level ($\alpha$, often 5\% or 1\%)
+        \item Calculate rejection region (critical region), which contains all values of $x$ for which $T(x)$ is greater than the critical value $c$: $R = \{x: T(x) > c\}$
+        \item Determine whether to accept or reject $H_0$
+    \end{enumerate}
+    \item Alternatively, just calculate the $p$-value (probability given $H_0$ of getting a result at least as extreme as that which was observed). Reject the null hypothesis if $p \leq \alpha$.
+    \item Common ranges for $p$-values are:
+    \begin{itemize}
+        \item $< 0.01$: very strong evidence against $H_0$
+        \item $[0.01, 0.05]$: strong evidence against $H_0$
+        \item $[0.05, 0.10]$: weak evidence against $H_0$
+        \item $> 0.1$: yikes man
+    \end{itemize}
+    \item Type I errors (false positives) occur when we incorrectly \textbf{reject} the null hypothesis. This is equivalent to $\alpha$.
+    \item Type II errors (false negatives) occur when we incorrectly \textbf{fail to reject} the null hypothesis.
+\begin{center}
+\begin{tabular}{l|cc}
+  & \textsf{Retain} $H_0$ & \textsf{Reject} $H_0$ \\
+  \hline
+  $H_0$ \textsf{true} & $\surd$ & Type I Error ($\alpha$)\\
+  $H_1$ \textsf{true} & Type II Error ($\beta$) &
+  $\surd$ (power) \\
+\end{tabular}
+\end{center}
+  \item \emph{note: should probably have something on multiple comparisons here}
+\end{itemize}
+
+\subsection{Bayesian inference}
+
+\section{Linear algebra}
+%% note- yoinked from Goodfellow et al Deep Learning book
+\subsection{Objects and notation}
+\begin{itemize}
+    \item Let scalar $s \in \mathbb{R}$
+    \item Let vector $\bm{x} \in \mathbb{R}^n$. We should assume that all vectors are `column vectors' (ie a matrix in $\mathbb{R}^{n \times 1}$)
+    \item Let 2-d matrix $\bm{A} \in \mathbb{R}^{m \times n}$. We'll identify specific elements like this:
+    $$\begin{bmatrix}
+    A_{1,1} & A_{1,2} \\
+    A_{2,1} & A_{2,2} \\
+    \end{bmatrix}$$
+    \begin{itemize}
+        \item We'll denote a whole column $i$ of a matrix as $\bm{A}_{:,i}$ and a row $j$ as $\bm{A}_{j, :}$
+    \end{itemize}
+    \item Tensors extend beyond 2d, eg: $\textbf{A}_{i,j,k}$
+\end{itemize}
+\subsection{Basic matrix operations review}
+\begin{itemize}
+    \item The \textbf{transpose} operation mirrors the matrix across the diagonal and is denoted $\bm{A}^\mathrm{T}$.
+    $$
+    \bm{A} = \begin{bmatrix}
+    A_{1,1} & A_{1,2} \\
+    A_{2,1} & A_{2,2} \\
+    A_{3,1} & A_{3,2} \\
+    \end{bmatrix} \Rightarrow
+    \bm{A}^\mathrm{T} = \begin{bmatrix}
+    A_{1,1} & A_{2,1} & A_{3, 1} \\
+    A_{1,2} & A_{2,2}, &  A_{3, 2}\\
+    \end{bmatrix}
+    $$
+    \item Addition of matrices is element-wise, and therefore requires them to be the same shape.
+    $$ C_{i,j} = A_{i,j} + B_{i,j} \qquad \{A, B, C\} \in \mathbb{R}^{m \times n} $$
+    \item The \textbf{matrix product} of $\bm{A} \in \mathbb{R}^{m \times n}$ and $\bm{B} \in \mathbb{R}^{n \times p}$ is $\bm{C} \in \mathbb{R}^{m \times p}$. Note that the number of columns in the first matrix must be equal to the number of rows in the second matrix ($m$). Each element in $\bm{C}_{i,j}$ can be thought of as the dot product between row $i$ of $\bm{A}$ and column $j$ of $\bm{B}$.
+    $$ C_{i,j} = \sum_{k} A_{i,k}B_{k,j}$$
+    \item Some matrix operation properties:
+    \begin{itemize}
+        \item Distributive: $\bm{A}(\bm{B}+\bm{C}) = \bm{AB}+\bm{AC}$
+        \item Associative: $\bm{A}(\bm{BC}) = (\bm{AB})\bm{C}$
+        \item \textbf{NOT} commutative: $\bm{AB} \neq \bm{BA}$
+        \item Transpose product: $(\bm{AB})^\mathrm{T} = \bm{B}^\mathrm{T}\bm{A}^\mathrm{T}$
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{The identity matrix}
+\begin{itemize}
+    \item We'll define the \textbf{identity matrix} $\bm{I}_n$ as the matrix that does not change a vector $\bm{x}$ of dimension $n$ when they are multiplied together so that $\forall \bm{x} \in \mathbb{R}^n, \quad \bm{I}_n\bm{x}=\bm{x}$. The identity matrix is just a square matrix with $1$ on the diagonal and $0$ elsewhere, so for $\bm{x} \in \mathbb{R}^3$:
+     $$ \bm{I}_3 = \begin{bmatrix}
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1 \\ \end{bmatrix} $$\end{itemize}
+
+
+\subsubsection{Matrix inversion}
+\begin{itemize}
+    \item The \textbf{matrix inverse} of $\bm{A}$ is denoted $\bm{A}^{-1}$ and we define it such that:
+    $$ \bm{A}^{-1}\bm{A} = \bm{I}_n$$
+    \item $\bm{A}$ is \textbf{invertible} if it is square ($\in \mathbb{R}^{n \times n}$) and non-singular.
+    \begin{itemize}
+        \item A square matrix is \textbf{singular} $\iff$  it has a determinant of $0$
+        \item Singular matrices have linearly dependent columns
+        \begin{itemize}
+            \item The \textbf{determinant} of a matrix (usually denoted $\mathrm{det}(\bm{A})$ or $\vert \bm{A}\vert$) is a scalar factor that can be computed from the elements of a square matrix. For a $2\times 2$ matrix:
+            $$ \bm{A} =
+            \begin{bmatrix}
+            a & b \\
+            c & d \\ \end{bmatrix}
+            \Rightarrow \vert \bm{A} \vert = ad-bc $$
+            \end{itemize}
+\end{itemize}
+\end{itemize}
+\subsection{Systems of linear equations}
+\begin{itemize}
+    \item We can define a \textbf{system of linear equations}, $\bm{Ax}=\bm{b}$. $\bm{A}$ is a known matrix of coefficients, $\bm{b}$ is a known vector, and we're trying to solve for vector $\bm{x}$. The matrix $\bm{A} \in \mathbb{R}^{m \times n}$ describes a system of $m$ equations with $n$ unknowns.
+    \item This is really the same as writing:
+    $$ x_1 \begin{bmatrix}
+     a_{11}\\
+     a_{21}\\
+     \vdots \\
+     a_{m1}\\ \end{bmatrix} +
+     x_2 \begin{bmatrix}
+     a_{12}\\
+     a_{22}\\
+     \vdots \\
+     a_{m2}\\ \end{bmatrix} +
+     \hdots +
+     x_n \begin{bmatrix}
+     a_{1n}\\
+     a_{2n}\\
+     \vdots \\
+     a_{mn}\\ \end{bmatrix} =
+     \begin{bmatrix}
+     b_{1}\\
+     b_{2}\\
+     \vdots \\
+     b_{n}\\ \end{bmatrix}
+     $$
+
+
+    \item
+    \item For other important properties of invertible matrices see \href{https://en.wikipedia.org/wiki/Invertible_matrix#The_invertible_matrix_theorem}
+    {\textbf{Wikipedia: Invertible matrix theorem}}
+    \item
+    \end{itemize}
+
+
+\section{Differential equations}
+
+\subsection{1st order differential equations}
+
+\subsection{2nd order differential equations}
+
+\subsection{}
+
+\end{multicols*}
+\end{document}
