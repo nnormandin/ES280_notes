@@ -88,6 +88,13 @@
 
 \end{itemize}
 
+\subsubsection{Notes on the uniform distribution}
+\begin{itemize}
+    \item The continuous uniform distribution is a function of the minimum and maximum values  $a$ and $b$ with mean and median equal to $\frac{a+b}{2}$
+    \item The \textbf{standard uniform} is a random variable $\sim \mathcal{U}(0, 1)$
+    \item The PDF of a uniform distribution is a horizontal line from $a$ to $b$
+    %\item 
+\end{itemize}
 
 \end{multicols*}
 
@@ -317,15 +324,50 @@
      b_{n}\\ \end{bmatrix}
      $$
 
-
     \item
     \item For other important properties of invertible matrices see \href{https://en.wikipedia.org/wiki/Invertible_matrix#The_invertible_matrix_theorem}
     {\textbf{Wikipedia: Invertible matrix theorem}}
     \item
     \end{itemize}
 
-
 \section{Differential equations}
+\subsection{Calculus refresher}
+\begin{itemize}
+    \item Some useful properties / rules with differentiable functions $f(x)$ and $g(x)$:
+    \begin{itemize}
+        \item $(cf)' = c(f')$ for any constant $c$
+        \item $c' = 0$ for any constant $c$
+        \item $(f+g)' = f' + g'$
+        \item \textbf{Power rule:} $\frac{d}{dx}(x^n) = nx^{n-1}$
+        \item \textbf{Product rule:} $(fg)' = f'g + g'f$
+        \item \textbf{Quotient rule:} $(\frac{f}{g})' = \frac{f'g - g'f}{g^2}$
+        \item \textbf{Chain rule:} $f(g(x))' = f'(g)g'$
+    \end{itemize}
+    \item Common derivatives:
+    \begin{itemize}
+        \item $\frac{d}{dx}\; x = 1$
+        \item $\frac{d}{dx}\; cx = c$
+        \item $\frac{d}{dx}\; e^x = e^x$
+        \item $\frac{d}{dx}\; \ln{x} = \frac{1}{x}, \quad x > 0$
+        \item $\frac{d}{dx}\; \ln{\lvert x \rvert}= \frac{1}{x}, \quad x \neq 0$
+        \item $\frac{d}{dx}\; c^x = c^x \ln{c}$
+        \item $\frac{d}{dx}\; \sin{x} = \cos{x}$
+        \item $\frac{d}{dx}\; \cos{x} = -\sin{x}$
+        \item $\frac{d}{dx}\; \tan{x} = \sec^2{x}$
+        \item $\frac{d}{dx}\; \log_c{x}=\frac{1}{x\ln{c}}, \quad x > 0 $
+    \end{itemize}
+    \item Common antiderivatives:
+    \begin{itemize}
+        \item $\int 0 \;dx = C$
+        \item $\int 1 \;dx = x + C$
+        \item $\int n \;dx = nx + C$
+        \item $\int e^x \;dx = e^x + C$
+        \item $\int \frac{1}{x} \;dx = \ln{x} +C$
+        \item $\int x^n \;dx = \frac{x^{n+1}}{n+1} + C$
+        \item $\int \sin{x} \; dx = -\cos{x} + C$
+        \item $\int \cos{x} \; dx = \sin{x} + C$
+    \end{itemize}
+\end{itemize}
 
 \subsection{1st order differential equations}
 
