@@ -394,13 +394,29 @@
 \item Taylor series: allows us to predict $y(x)$ from derivatives at $x = x_0$
     \[ y(x_0 + \Delta x) = y_0 + (\Delta x)y'_0 + \cdots  + \frac{1}{n!}(\Delta x)^n y_0^{(n)} \] 
     \[ = \sum_{n=0}^{\infty} \frac{(\Delta x)^n}{n!}y^{(n)}(x_0) \]
+\item $e^t$ follows the addition rule for exponents (ie: $(e^t)(e^T) = e^{t+T})$
 \end{itemize}
 
 \subsection{1st order differential equations}
-\subsubsection{}
+A first order ordinary differential equation connects a function $y(t)$ with its derivative $dy/dt$. We can additionally classify first order ODEs as linear or nonlinear based on their linearity with respect to $y$. For example:
+\begin{itemize}
+    \item linear examples: $\frac{dy}{dt} = y$, $\frac{dy}{dt} = -y$, $\frac{dy}{dt} = 2ty$
+    \item nonlinear example: $\frac{dy}{dt} = y^2$
+\end{itemize}
 
-\subsubsection{}
+\subsubsection{Solutions to $dy/dt = ay$}
+\begin{itemize}
+    \item since $\frac{d}{dt} e^t = e^t$, solutions to differential equations of the form $\frac{dy}{dt} = ay$ take the form:
+        \[ y(t) = Ce^{at}\]
+    \item the free constant $C$ is the starting value, $y(0)$, so:
+        \[ y(t) = y(0)e^{at}\]
+    \item this solution grows exponentially when $a>0$ and decays when $a<0$
+\end{itemize}
 
+\subsubsection{1st order DEs with source term}
+\begin{itemize}
+    \item 
+\end{itemize}
 
 \subsection{2nd order differential equations}
 
