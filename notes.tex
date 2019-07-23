@@ -96,9 +96,9 @@
     %\item 
 \end{itemize}
 
-\subsection{Notes on binomial distribution}
+\subsubsection{Notes on binomial distribution}
 \begin{itemize}
-    \item 
+    \item Discrete distribution $\mathcal{B}(n, p)$ for the number of successes in a sequence of $n$ Bernoulli trials with probability of success $p$.
     \item 
     \item 
 \end{itemize}
@@ -236,7 +236,6 @@
 \end{tabular}
 \end{center}
 %TODO: multiple comparisons comment
-  \item \emph{note: should probably have something on multiple comparisons here}
 \end{itemize}
 
 \subsection{Bayesian inference}
@@ -351,7 +350,7 @@
         \item $(cf)' = c(f')$ for any constant $c$
         \item $c' = 0$ for any constant $c$
         \item $(f+g)' = f' + g'$
-        \item \textbf{Power rule:} $\frac{d}{dx}(x^n) = nx^{n-1}$
+        \item \textbf{Power rule:} $(x^n)' = nx^{n-1}$
         \item \textbf{Product rule:} $(fg)' = f'g + g'f$
         \item \textbf{Quotient rule:} $(\frac{f}{g})' = \frac{f'g - g'f}{g^2}$
         \item \textbf{Chain rule:} $f(g(x))' = f'(g)g'$
@@ -380,9 +379,26 @@
         \item $\int \sin{x} \; dx = -\cos{x} + C$
         \item $\int \cos{x} \; dx = \sin{x} + C$
     \end{itemize}
+\item Fundamental theorem of calculus:
+    $$ \int_a^b\frac{dy}{dx}dx=y(b)-y(a) \quad \iff \quad \frac{d}{dx}\int_a^x f(s)ds = f(x) $$
+\item Three ways to use the fact that $\frac{dy}{dx} \approx \frac{\Delta y}{\Delta x}$
+\begin{enumerate}[label=\alph*.]
+    \item knowing $\Delta x$ and $dy/dx$, we know $\Delta y \approx \Delta x \frac{dy}{dx}$ (linear approximation)
+    \item knowing $\Delta y$ and $dy/dx$, we know $\Delta x \approx \frac{\Delta y}{dy/dx}$ (Newton's method)
+    \item approximate the derivative if we know $\Delta y$ and $\Delta x$ because $dy/dx \approx \frac{\Delta y}{\Delta x}$
+     \begin{itemize}
+         \item \emph{note: better to take a centered difference (half step each way)}
+             \[ \frac{dy}{dx} \approx \frac{y(x+\frac{1}{2}\Delta x) - y(x-\frac{1}{2} \Delta x)}{\Delta x}\]
+ \end{itemize}
+\end{enumerate}
+\item Taylor series: allows us to predict $y(x)$ from derivatives at $x = x_0$
+    \[ y(x_0 + \Delta x) = y_0 + (\Delta x)y'_0 + \cdots  + \frac{1}{n!}(\Delta x)^n y_0^{(n)} \] 
+    \[ = \sum_{n=0}^{\infty} \frac{(\Delta x)^n}{n!}y^{(n)}(x_0) \]
 \end{itemize}
 
 \subsection{1st order differential equations}
+\subsubsection{}
+
 \subsubsection{}
 
 
