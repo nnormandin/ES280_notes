@@ -339,17 +339,19 @@
      \vdots \\
      b_{n}\\ \end{bmatrix}
      $$
-
     \end{itemize}
 
 \section{Differential equations}
 \subsection{Calculus refresher}
 \begin{itemize}
-    \item Some useful properties / rules with differentiable functions $f(x)$ and $g(x)$:
+    \item Some useful properties with differentiable functions $f(x)$ and $g(x)$:
     \begin{itemize}
         \item $(cf)' = c(f')$ for any constant $c$
         \item $c' = 0$ for any constant $c$
         \item $(f+g)' = f' + g'$
+    \end{itemize}
+    \item Important rules for derivatives
+    \begin{itemize}
         \item \textbf{Power rule:} $(x^n)' = nx^{n-1}$
         \item \textbf{Product rule:} $(fg)' = f'g + g'f$
         \item \textbf{Quotient rule:} $(\frac{f}{g})' = \frac{f'g - g'f}{g^2}$
@@ -404,8 +406,10 @@ A first order ordinary differential equation connects a function $y(t)$ with its
     \item nonlinear example: $\frac{dy}{dt} = y^2$
 \end{itemize}
 
-\boldmath
+\boldmath{}
 \subsubsection[1st order DEs without source]{Solutions to $dy/dt = ay$}
+\unboldmath{}
+
 \begin{itemize}
     \item since $\frac{d}{dt} e^t = e^t$, solutions to differential equations of the form $\frac{dy}{dt} = ay$ take the form:
         \[ y(t) = Ce^{at}\]
@@ -414,10 +418,31 @@ A first order ordinary differential equation connects a function $y(t)$ with its
     \item this solution grows exponentially when $a>0$ and decays when $a<0$
 \end{itemize}
 
-\boldmath
+
+\boldmath{}
 \subsubsection[1st order DEs with source term]{1st order DEs with source term where $dy/dt = ay +q(t)$}
+\unboldmath{}
+
 \begin{itemize}
-    \item 
+    \item This form allows a source/sink term $q(t)$. The separation of $ay$ and $q(t)$ is critical for linear equations
+    \item The homogeneous (null) solution when is $y_n(t)=Ce^{at}$ when $q=0$
+    \item The particular solution is $y_p(t)$ when $q \neq 0$
+    \item  
+\end{itemize}
+
+\subsection{Separable DEs}
+\begin{itemize}
+    \item We can solve some differential equations of two variables by separating the variables on either side of the equation using algebra and then integrating each side. Here's a full example with $\frac{dy}{dt}=ay$ (where $a$ is some constant) showing how we arrive at $Ce^{at}$
+    \begin{enumerate}
+        \item Rearrange terms, leaving $y$ and $dy$ on the left side with $dt$ on the right side
+            \[ \frac{dy}{dt}=ay \quad \rightarrow \quad \frac{1}{y}\;dy = a \; dt\]
+        \item Integrate both sides of the equation to remove $dy$ and $dt$ terms.
+            \[\int \frac{1}{y}\;dy = \int a \; dt \quad \rightarrow \quad \ln{\lvert y \rvert}\ + C_1= at + C_2 \]
+        \item Solve for y. Combining the $C_1$ and $C_2$ terms just gives us another constant. Since $e^C$ is also still just some constant, we can rename this term $C$ to arrive at our solution.
+            \[ \lvert y \rvert = e^{at+C} = e^{at}e^C = Ce^{at}\]
+
+    \end{enumerate}
+
 \end{itemize}
 
 \subsection{2nd order differential equations}
