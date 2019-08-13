@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{amsmath,amssymb}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[nodayofweek]{datetime}
+\usepackage{environ}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[margin=25mm,footskip=20pt,includefoot]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{rotating}
+\usepackage{tikz}
+\usepackage{threeparttable}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{bm}
+\usepackage{lipsum}
+
+
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue}
+
+\begin{document}
+\noindent
+\textbf{ES280 - Paper Review} \\
+\textbf{Nick Normandin} \\
+
+\doublespacing
+
+\section{Summary}%
+\label{sec:Summary}
+
+The paper `Process Systems Engineering as a Modeling Paradigm for Analyzing Systemic Risk in Financial Networks' presents a framework for identifying sources of potential instability caused by feedback systems between stakeholders taking actions in financial markets. The authors specifically focus on the relationship between banks, hedge funds, and the market. The bank is further divided into the prime brokerage, finance, and trading desks. It appears from the block diagram in
+Exhibit 3 that the bank/dealer in question is not also a market maker. According to the paper, the prime broker's main function is to extend loans (cash) in exchange for securities that are used as collateral. 
+
+The authors identify several widely held concerns regarding the interconnectedness of financial instutions. The spread of instability between institution types, asset classes, and regions has been a growing threat to global financial stability for some time. Interestingly, the authors also identify the fact that some actions are `\emph{locally} stabilizing yet globally \emph{destabilizing}'. An example of this sort of behavior is a hedge fund selling an asset to meet liquidity
+requirements or adjust leverage limits. This behavior is rational in isolation, but the authors warn against the potentially devastating consequences of positive feedback effects from asset sales depressing prices.
+
+Two main types of `crisis dynamics' are presented: fire sales and funding runs. In a fire sale, a hedge fund is forced to sell off a position. Although the paper identifies three possible reasons (change in PB's loan capacity, margin rate increase resulting in a margin call, or a price drop in the underlying security), I believe the most common root cause would be a fluctuation in the asset price. The paper identifies the fact that a decrease in an asset's price will effectively
+increase leverage. The trading desk executing the sale will increase the supply of shares to the market, resulting in a further price drop. 
+
+A funding run occurs between a bank/dealer and the money market. The main causes identified are impairment of the quality of the collateral, decreased market value of the collateral, or a change in the money market's margin rate. Decreased funding causes market makers to sell into the market, again causing a further depression in prices (similarly to the fire sale scenario). Both of the dynamics identified are the result of `locally stabilizing' behavior by market participants.
+
+\section{Observations}%
+\label{sec:Observations}
+
+I think that the authors of the paper do an excellent job untangling the complex interactions of the many market participants involved in a hypothetical asset manager's daily transactions. There are clear simplifications made (eg: prime brokers do a lot more than lend capital- they're responsible for clearing, netting, security lending, etc), but for the most part the relationships seem close to reality. Overall, I think it's important to identify flaws in the relationships between market
+participants that lead to market-wide instability. The cautionary tale of Long Term Capital Management is a key example.
+
+My first concern about the paper is the simplification of price impacts of trade execution and the lack of discussion of the intrinsic value of a security. It's true that for illiquid assets a single participant can create significant price disruption from trading. For US large market cap equities, this usually isn't the case. The tape for any constituent of the S\&P500 will typically be pretty deep; limit orders will be lined up around the execution price, and the impact of the
+transaction may not even be observable. If the price does fall, it's entirely likely that other market particants will step in to purchase the (now oversold) asset. Assuming that the market price represents some equilibrium approximation of instrinsic value, it's difficult for a single participant to structurally impact the price of an asset. This is especially true in the case of hedge funds, which typically are not majority holders of single names (unless they happen to be an
+activist fund).
+
+My second observation is that the risk limits imposed on hedge funds in this paper are relegated to leverage. In reality, this is one of a very small number of risk limitations faced by the fund as a whole and by individual portfolio managers. In addition to limits on leverage, there will be:
+
+\begin{itemize}
+    \item stop losses for individual positions before they represent a threat to portfolio drawdown / imbalance
+    \item buying power cuts at predetermined net market value drawdown points
+    \item beta limits
+    \item gross market value (long/short balance) limits
+    \item factor exposure limits
+    \item position size limits, as a function of market cap (likely free float market cap or 21-day rolling average daily volume)
+\end{itemize}
+
+In particular, the position size limits are aimed at keeping the exact issues identified in this paper from occurring. Asset managers are aware of the threats of trade price impact.
+
+I would also note that banks/dealers are also often market makers, and the duty of their trading desk is to optimally execute a transaction. Although some implementation shortfall is inevitable, slippage for most liquid assets can be minimized by VWAP or TWAP execution. This doesn't even take dark pools and other algorithmic trading options into account.
+
+My final observation regarding this paper is that it misses two of the key threats to hedge funds- short squeezes and risk-off scenarios in `hedge fund hotels'. Many stocks experience hedge fund `crowding' behavior- a disproportionate number of active asset managers hold shares. Since these firms are all subject to similar risk limits, a significant fluctuation in asset price can simultaneously trigger a de-risking at many of the major asset holders. In this case, individual firm
+risk controls are not sufficient because of the feedback from adjacent asset managers.
+
+\end{document}
