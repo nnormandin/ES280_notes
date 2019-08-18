@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[nodayofweek]{datetime}
+\usepackage{titlesec}
+\usepackage{environ}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[landscape, margin=15mm,footskip=8pt,includefoot]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{rotating}
+\usepackage{tikz}
+\usepackage{threeparttable}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{bm}
+\usepackage{lipsum}
+
+
+\usepackage{sectsty}
+
+\sectionfont{\fontsize{8}{8}\selectfont}
+\titlespacing{\section}{0pt}{\parskip}{-\parskip}
+
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue}
+
+\begin{document}
+\pagenumbering{gobble}
+\lstset{language=Matlab,
+commentstyle=\color{PineGreen}}
+\begin{multicols*}{2}
+
+% \footnotesize
+\scriptsize
+\section{Stats}
+
+\def\arraystretch{1.2}
+\begin{tabular}{ l c c c c }
+    Distribution & $\mathbb{E}(x)$ & $\mathbb{V}(x)$ & $f(x)$ & F(x)  \\
+    \hline
+    Uniform & $(a+b)/2$ & $(b-a)/12$ & $1/(b-a)$ & $\frac{x-a}{b-a}$\\ 
+    Binomial & $np$  & $np(1-p)$ & $\binom{n}{x}p^x(1-p)^{n-x}$ &  \\  
+    Bernoulli & $p$ & $p(1-p)$ & $ p^x(1-p)^{1-x}$ & $(1-p)^{1-x}$ \\
+    Normal & $\mu$ & $\sigma^2$ & &
+\end{tabular}
+\begin{itemize}
+    \setlength\itemsep{0em}
+    \item $Z = \frac{X-\mu}{\sigma}, \quad se = \frac{\sigma}{\sqrt{n}}, \quad $
+    \item \textbf{68, 95, 99.7} at 1, 2, 3 $\sigma$ in normal distribution
+    \item CI widths are $t_{\alpha/2, n-1}\frac{s}{\sqrt{n}}$ or $Z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$ or $\sqrt{\hat{p}(1-\hat{p})/n}$
+    \item for large population proportion, use $\sim N(\hat{p}, \sqrt{p(1-p)/n})$
+    \item Type I errors (false positives): incorrectly  \textbf{reject} the null hypothesis. This is equivalent to $\alpha$.
+    \item Type II errors (false negatives): incorrectly \textbf{fail to reject} the null hypothesis.
+\end{itemize}
+
+\section{Matlab for stats}
+\begin{lstlisting}
+% MLR
+data = readtable('...')'
+col = data(:,n)
+X = table2array([cols])
+mod = fitlm(X, y, 'VarNames', {'x',..., 'y'})
+coef_tbl = mod.Coefficients
+size(X, 1) % get rows of X
+[b,se,pval,inmodel,stats,nextstep,hst] = stepwisefit(X,y)
+% sampling / stats
+y = binornd(10, 0.1, 100, 1)
+Z = (p_hat - P) / sigma  % for prop test
+p_one_sided = 1-normcdf(Z); p_two_sided = 2*(1-normcdf(Z))
+% using binocdf for discrete hypothesis test
+% ex: 22 of 32 successes
+binocdf(21, 32, 0.5) % -> 97.49
+% important inverses
+tinv(alpha, n-1); norminv(alpha)
+% pdfs
+normpdf(x, mu, sigma); binopdf(x, n, p)
+% approximation of norm w/ binomial
+normpdf(x, n*p,sqrt(n*p*(1-p))
+% t-test helper fn
+[h,p,ci,stats] = ttest2(x1, x2, 'vartype', 'equal',
+    'Tail', 'right')
+% golden rectange example
+% n = 20, x = 0.66, s = 0.093, mu = 0.618
+tcrit = tinv(1-(.05/2),n-1) % -> 2.093
+t = (x-mu) / (n / sqrt(s)) % -> 2.019, DNR
+%other
+plotmatrix(X); corrplot(X)
+\end{lstlisting}
+
+
+\section{LR / MLR}
+$$S_{xx} = \sum (x_i - \bar{x})^2, \quad S_{xy} = \sum y_i(x_i - \bar{x})^2$$
+$$\beta_1 = \frac{S_{xy}}{S_{xx}}, \quad \beta_0 = \bar{y} - \beta_1 x$$
+$$ SST = SSR + SSE, \quad R^2 = \frac{SSR}{SST} = 1- \frac{SSE}{SST}$$
+$$ SSE = \sum(y_i - \bar{y})^2, \quad SSR = \sum(\hat{y_i} - \bar{y}_i)^2, \quad SST = \sum(y_i - \hat{y}_i)^2$$
+$$ R^2_{adj} = 1 - \frac{SSE / (n-p)}{SST/(n-1)}$$
+\begin{itemize}
+    \setlength\itemsep{0em}
+    \item if a single $\beta_i$ is significant, regression is significant
+    \item t-tests for individual $\beta_i$ terms, F-test for overall regression
+\end{itemize}
+
+\section{Diff eqs}
+\begin{itemize}
+    \setlength\itemsep{0em}
+    \item $Accumulation = F_i - F_o + generation$
+    \item For tank example with valve (with constant $R$), $F_o = \frac{h}{R}$.
+    \item Standard form is $\tau_p \frac{dh}{dt} + h(t) K_pF_i(t)$ where $\tau_p$ and $K_p = R$ are the time constant and static gain.
+    \item Laplace of standard form is $h(s) = \frac{K_p}{\tau_ps+1}F_i(s)$ where $G_p = \frac{K_p}{\tau_ps+1}$
+    \item transfer functions can be multiplied. $G_1(s) \rightarrow G_2(s) = G_1(s)G_2(s)$ where $G_1(s) = h_1(s)/F_i(s)$ and $G_2(s) = h_2(s)/h_1(s)$.
+    \item For a 2nd order ODE we have time constant $\tau_p$, damping factor $\zeta$, static gain $K$.
+        $$ G_0(s) = \frac{k_1k_2}{\tau_1\tau_2s^2+2\zeta\tau s + 1} \rightarrow \frac{K}{\tau^2s^2+2\zeta\tau s + 1 = 0} $$
+        \def\arraystretch{1}
+        \begin{tabular}{l l l}
+        \textbf{damping factor} & \textbf{type} & \textbf{behavior} \\
+            \hline
+            $\zeta = 1$ & critically damped & desireable, stable\\
+            $\zeta > 1$ & overdamped & slow to reach step change\\
+            $\zeta < 1$ & underdamped & initial overshoot, oscillations\\
+        \end{tabular}
+    \item if all poles (roots of polynomial in denominator of $G(s)$) are real and negative, system is stable. imaginary components of roots cause oscillatory behavior. positive real root components cause exponential growth.
+    \item Laplace of impulse is $s$, step is $1/s$. For temporary step (eg from $t=2$ to $t=5$):
+        $$f_i(t) = u(t-2) - u(t-5) \rightarrow \mathrm{L}[f(t)]=e^{-2s}-e^{-5s}/s$$
+    \item adding in proportional control (PC), we get $G_c = K_c$ (a constant) and $G(s) = K_cK_p / (\tau_ps+1+K_cK_p)$.
+        $$ y(s) =  \frac{G_pG_c}{1 + G_pG_c} y_{sp}(s) + \frac{G_d}{1+G_pG_c}d(s) = \frac{k'_p}{\tau_p's+1}y_{sp}(s) + \frac{k'_d}{\tau_p's+1}d(s)$$
+    \item We define $k_p'=K_pK_c/(1+K_pK_c)$, $k'_d = K_d/(1+K_pK_c)$, and $\tau'_p = \tau_p/(1+K_pK_c)$. Note that adding PC doesn't change order, $\tau'_p < \tau_p$, and $k'_p < k_p$.
+    \item With $d(s)=0$, a step change in $y_{sp}$ yields $y(t)=k'_p(1 - e^{-t / \tau'_p})$
+    \item Final value theorem: $\lim_{t \to \infty} f(t) = \lim_{s \to 0}sf(s)$
+
+
+\section{Matlab for diff eqs}
+\begin{lstlisting}
+syms s, y(t)% make symbolic variables
+ilaplace((1/15)/((10/3)*s^2 +s)) % -> 1/15 - exp(-(3*t)/10)/15
+laplace(2*diff(y(t), 2) + 8*y(t) -3)
+[r,p,k] = residue([0.2], [10, 1, 0]) %-> [-0.2, 0.2], [-0.1, 0] 
+% interpret residue as -.2/(s+1) + .2/s
+G = tf(2, [1 3]); stepplot(G)
+
+
+\end{lstlisting}
+
+
+
+\end{itemize}
+\end{multicols*}
+\end{document}
