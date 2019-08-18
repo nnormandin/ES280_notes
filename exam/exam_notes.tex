@@ -145,7 +145,7 @@ ilaplace((1/15)/((10/3)*s^2 +s)) % -> 1/15 - exp(-(3*t)/10)/15
 laplace(2*diff(y(t), 2) + 8*y(t) -3)
 [r,p,k] = residue([0.2], [10, 1, 0]) %-> [-0.2, 0.2], [-0.1, 0] 
 % interpret residue as -.2/(s+1) + .2/s
-G = tf(2, [1 3]); stepplot(G)
+G = tf(2, [1 3]); stepplot(G); pole(G)
 
 
 \end{lstlisting}
