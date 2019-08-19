@@ -136,7 +136,9 @@ $$ R^2_{adj} = 1 - \frac{SSE / (n-p)}{SST/(n-1)}$$
     \item We define $k_p'=K_pK_c/(1+K_pK_c)$, $k'_d = K_d/(1+K_pK_c)$, and $\tau'_p = \tau_p/(1+K_pK_c)$. Note that adding PC doesn't change order, $\tau'_p < \tau_p$, and $k'_p < k_p$.
     \item With $d(s)=0$, a step change in $y_{sp}$ yields $y(t)=k'_p(1 - e^{-t / \tau'_p})$
     \item Final value theorem: $\lim_{t \to \infty} f(t) = \lim_{s \to 0}sf(s)$
-
+    \item adding PC to 2nd order system define: $K'_p = \frac{K_cK_p}{1+K_cK_p}$, $\tau ' = \frac{\tau}{\sqrt{1+K_pK_c}}$, $\zeta '=\frac{\zeta}{\sqrt{1+K_pK_c}}$.
+        $$ y(s) = \frac{k_p'}{\tau{2'} s^{2} +2 \zeta ' \tau ' s+1}$$
+\item transfers for controls; IC: $\frac{K_c}{\tau_is}$, PIC: $K_c(1+\frac{1}{\tau_is})$, DC: $K_c\tau_ds$, PIDC: $K_c(1+(1/\tau_i) +\tau_ds)$
 
 \section{Matlab for diff eqs}
 \begin{lstlisting}
@@ -146,7 +148,6 @@ laplace(2*diff(y(t), 2) + 8*y(t) -3)
 [r,p,k] = residue([0.2], [10, 1, 0]) %-> [-0.2, 0.2], [-0.1, 0] 
 % interpret residue as -.2/(s+1) + .2/s
 G = tf(2, [1 3]); stepplot(G); pole(G)
-
 
 \end{lstlisting}
 
